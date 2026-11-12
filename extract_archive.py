@@ -5,7 +5,7 @@ from stat import S_ISLNK
 from zipfile import ZipFile
 
 ARCHIVE = Path("GOLD_AI_RESEARCH_CLEAN (1).zip")
-OUTPUT = Path("archive_extracted")
+OUTPUT = Path(".")
 ALLOWED_SUFFIXES = {".py", ".md", ".yaml", ".yml", ".txt", ".ini", ".csv", ".html", ".example", ".gitignore"}
 MAX_TOTAL_BYTES = 5 * 1024 * 1024
 
