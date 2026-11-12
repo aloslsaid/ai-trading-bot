@@ -118,6 +118,18 @@ def cmd_download_yahoo(args, s):
     log.info("Yahoo approximation stored separately; it is not eligible for real-data training or backtesting.")
 
 
+def _assert_real_provenance(summary: dict) -> None:
+    if summary.get("label") != "real":
+        raise ValueError("Training/evaluation requires a dataset explicitly labeled 'real'")
+    audit = summary.get("raw_hour_audit") or {}
+    meta = audit.get("meta") or {}
+    if audit.get("source") == "yahoo_finance" or meta.get("provider") == "Yahoo Finance":
+        raise ValueError(
+            "This dataset was built from Yahoo hourly bars with synthetic spread; "
+            "it is not eligible for real-data training or backtesting. Download/import real Bid/Ask data."
+        )
+
+
 def _backtest(s, tf: str, synthetic: bool, out: Path, strategy: str = "baselines", model_path: str | None = None):
     df = load_timeframe(s, tf, synthetic)
     source_dir = s.path("synthetic_dir" if synthetic else "processed_dir")
@@ -127,8 +139,8 @@ def _backtest(s, tf: str, synthetic: bool, out: Path, strategy: str = "baselines
     summary = json.loads(summary_file.read_text(encoding="utf-8"))
     if synthetic and summary.get("label") != SYNTHETIC_LABEL:
         raise ValueError("Synthetic backtest requires explicitly labeled synthetic data")
-    if not synthetic and summary.get("label") != "real":
-        raise ValueError("Refusing to evaluate non-real data as real market history")
+    if not synthetic:
+        _assert_real_provenance(summary)
     cfg = BacktestConfig.from_settings(s)
     split = time_split(df, s["backtest"]["train_frac"], s["backtest"]["val_frac"])
     test = split["test"]
@@ -181,8 +193,7 @@ def _require_real_dataset(s, tf):
     if not summary_path.exists():
         raise FileNotFoundError(f"No real-data build summary at {summary_path}; run download/build first")
     summary = json.loads(summary_path.read_text(encoding="utf-8"))
-    if summary.get("label") != "real":
-        raise ValueError("Training/evaluation requires a dataset explicitly labeled 'real'")
+    _assert_real_provenance(summary)
     return load_timeframe(s, tf)
 
 
