@@ -58,7 +58,7 @@ def cmd_download(args, s):
             audit["missing"], audit["failed"], audit["corrupt"],
         )
     bid, ask = dukascopy.build_m1_from_raw(s.symbol, start, end, raw_dir, pv)
-    build_datasets(bid, ask, s, s.path("processed_dir"), label="real", raw_audit=audit)
+    build_datasets(bid, ask, s, s.path("yahoo_approx_dir"), label="yahoo_approx", raw_audit=audit)
     log.info("Build complete. Next: python main.py coverage")
 
 
@@ -115,7 +115,7 @@ def cmd_download_yahoo(args, s):
         "coverage": summary["coverage"],
         "provider_meta": meta,
     }, indent=2, default=str))
-    log.info("Next: python main.py train --tf M15")
+    log.info("Yahoo approximation stored separately; it is not eligible for real-data training or backtesting.")
 
 
 def _backtest(s, tf: str, synthetic: bool, out: Path, strategy: str = "baselines", model_path: str | None = None):
