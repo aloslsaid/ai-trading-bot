@@ -1,0 +1,14 @@
+# Python runtime dependencies. Requires Python 3.11+.
+# Dukascopy downloads use system curl (curl on Linux / curl.exe on Windows).
+# Yahoo Finance fallback (download-yahoo) requires yfinance.
+pandas>=2.1
+numpy>=1.26
+scipy>=1.11
+pyarrow>=15.0
+pyyaml>=6.0
+python-dotenv>=1.0
+pytest>=8.0
+requests>=2.31
+scikit-learn>=1.4
+joblib>=1.3
+yfinance>=0.2.40
