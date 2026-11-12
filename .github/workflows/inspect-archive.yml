@@ -2,23 +2,33 @@ name: Inspect gold research archive
 
 on:
   pull_request:
-  push:
-    branches: [main]
+
+permissions:
+  contents: write
 
 jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
       - name: List archive members without executing them
         run: python inspect_archive.py
-      - name: Extract allow-listed text files for review only
+      - name: Extract allow-listed source files for review
         run: python extract_archive.py
-      - uses: actions/upload-artifact@v4
-        with:
-          name: gold-ai-source-review
-          path: archive_extracted/
-          if-no-files-found: error
+      - name: Commit extracted source to the PR branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add GOLD_AI_RESEARCH
+          if git diff --cached --quiet; then
+            echo "No extracted files changed."
+          else
+            git commit -m "Extract GOLD AI research source from archive"
+            git push origin "HEAD:$GITHUB_HEAD_REF"
+          fi
