@@ -29,3 +29,6 @@ No test command can be confirmed from the root contents. Record the environment,
 ## Inspect the bundled research archive
 
 Run `python inspect_archive.py` to validate the ZIP and list its members without extracting or executing project files. Run `python extract_archive.py` to extract only allow-listed text/data files into the ignored `archive_extracted/` directory for manual review. The CI workflow publishes the extracted review files as a temporary artifact; it does not execute the archived application.
+
+
+The review branch safely extracts allow-listed source files into `GOLD_AI_RESEARCH/` for inspection. The extraction workflow does not execute any archived code.
