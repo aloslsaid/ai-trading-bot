@@ -4,7 +4,7 @@ from unittest.mock import patch
 import pandas as pd
 
 from gold_ai.config import load_settings
-from main import cmd_download_yahoo
+from main import _assert_real_provenance, cmd_download_yahoo
 
 
 def test_yahoo_approximation_never_overwrites_real_processed_data():
@@ -27,3 +27,26 @@ def test_yahoo_approximation_never_overwrites_real_processed_data():
     assert output_dir == settings.path("yahoo_approx_dir")
     assert output_dir != settings.path("processed_dir")
     assert build.call_args.kwargs["label"] == "yahoo_approx"
+
+
+def test_legacy_yahoo_data_mislabeled_real_is_rejected():
+    summary = {
+        "label": "real",
+        "raw_hour_audit": {
+            "source": "yahoo_finance",
+            "meta": {"provider": "Yahoo Finance"},
+        },
+    }
+    try:
+        _assert_real_provenance(summary)
+    except ValueError as exc:
+        assert "synthetic spread" in str(exc)
+    else:
+        raise AssertionError("Legacy Yahoo approximation was accepted as real data")
+
+
+def test_actual_real_data_provenance_is_accepted():
+    _assert_real_provenance({
+        "label": "real",
+        "raw_hour_audit": {"source": "dukascopy"},
+    })
