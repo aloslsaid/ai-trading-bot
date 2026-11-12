@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from pathlib import Path, PurePosixPath
+from pathlib import Path, PurePosixPath, PureWindowsPath
 from stat import S_ISLNK
 from zipfile import ZipFile
 
 ARCHIVE = Path("GOLD_AI_RESEARCH_CLEAN (1).zip")
-OUTPUT = Path(".")
+OUTPUT = Path("archive_extracted")
 ALLOWED_SUFFIXES = {".py", ".md", ".yaml", ".yml", ".txt", ".ini", ".csv", ".html", ".example", ".gitignore"}
 MAX_TOTAL_BYTES = 5 * 1024 * 1024
 
@@ -15,7 +15,15 @@ def main() -> int:
     with ZipFile(ARCHIVE) as archive:
         for info in archive.infolist():
             path = PurePosixPath(info.filename)
-            if path.is_absolute() or ".." in path.parts:
+            windows_path = PureWindowsPath(info.filename)
+            if (
+                "\\" in info.filename
+                or path.is_absolute()
+                or windows_path.is_absolute()
+                or windows_path.drive
+                or ".." in path.parts
+                or ".." in windows_path.parts
+            ):
                 raise ValueError(f"Unsafe archive path: {info.filename}")
             if info.is_dir():
                 continue
@@ -27,6 +35,8 @@ def main() -> int:
             if total > MAX_TOTAL_BYTES:
                 raise ValueError("Selected text files exceed the extraction size limit.")
             destination = OUTPUT / Path(*path.parts)
+            if destination.exists():
+                raise FileExistsError(f"Refusing to overwrite existing review file: {destination}")
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes(archive.read(info))
             print(f"EXTRACTED: {destination} ({info.file_size} bytes)")
