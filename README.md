@@ -1,26 +1,42 @@
-# GOLD AI — Gold Market Prediction
+# GOLD AI — XAUUSD Research
 
-An experimental project exploring machine-learning approaches to historical gold-market (XAUUSD) data. The repository currently contains a ZIP archive and this guide; the Python source and data dependencies have not been independently reviewed here.
+GOLD AI is an experimental research project for historical gold-market (XAUUSD) data and model evaluation. The repository contains an archive of a larger research project, an extraction helper, and a small test area; the complete trading/research source is not currently present as directly runnable root modules.
 
-## Repository contents
+## Current repository contents
 
-- `GOLD_AI_RESEARCH_CLEAN (1).zip` — project archive. Extract it locally to inspect its contents before running anything.
-- `README.md` — project overview and onboarding notes.
+- `GOLD_AI_RESEARCH_CLEAN (1).zip`: source archive.
+- `GOLD_AI_RESEARCH/tests/test_yahoo_fallback.py`: a small existing test.
+- `extract_archive.py`: safe extraction of selected text files from the archive.
+- `README.md`: project documentation.
 
-## Getting started
+## Inspect the archive safely
 
-1. Download or clone this repository.
-2. Extract the ZIP archive into a new local folder.
-3. Review the extracted files, especially its own README, dependency files, and data-source instructions.
-4. Use a separate virtual environment and install only dependencies specified by the extracted project.
-5. Do not run scripts until you understand their inputs and any network or trading actions they perform.
+Python 3.10+:
 
-There is no verified command to train or launch the project from the files currently visible at the repository root. Add the source files, dependency manifest, data description, and reproducible commands to the repository to make it directly usable.
+```bash
+python extract_archive.py
+```
 
-## Data, credentials, and safety
+The helper extracts only allow-listed text/configuration file types into `archive_extracted/`, rejects absolute paths, parent-directory traversal and symbolic links, and caps total extracted text size. Review the extracted files before running any project code. It does not extract binary datasets or model artifacts.
 
-Market data providers and API credentials are not documented in the root files. Keep credentials in local environment variables or an untracked `.env` file; never commit them. Historical model predictions are not financial advice, do not guarantee future results, and should not be used to place trades without independent validation and risk controls.
+## Next steps to make the research reproducible
+
+1. Review the extracted README and dependency manifest.
+2. Move only reviewed source files into a clear project structure; retain the original archive.
+3. Document market-data provider, instrument, timezone, tick/bar granularity and data license.
+4. Define chronological train/validation/test periods and prevent future-data leakage.
+5. Include transaction costs, spread, slippage, latency and risk controls in any backtest.
+6. Add tests for data ingestion, feature calculations, target alignment and backtest accounting.
+7. Report out-of-sample metrics and drawdown; do not report accuracy alone.
+
+## Security and financial risk
+
+Keep API keys in local environment variables or an untracked `.env` file. Never commit broker credentials or private market data. Historical model predictions do not guarantee future performance and are not financial advice. Do not connect an unreviewed model to a live brokerage account.
 
 ## Verification
 
-No test command can be confirmed from the root contents. Record the environment, data period, evaluation method, and actual test results before publishing performance claims.
+No end-to-end training or backtest command is claimed for the repository root because the full source is not currently checked in outside the archive. Review and test the extracted source before publishing performance claims.
+
+## License
+
+No license is declared. All rights reserved unless the repository owner adds an explicit license.
