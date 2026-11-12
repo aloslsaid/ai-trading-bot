@@ -32,3 +32,6 @@ Run `python inspect_archive.py` to validate the ZIP and list its members without
 
 
 The review branch safely extracts allow-listed source files into `GOLD_AI_RESEARCH/` for inspection. The extraction workflow does not execute any archived code.
+
+
+The extracted research package now includes a Yahoo-provenance guard and credential-redaction regression tests; see the GOLD AI test workflow for current validation.
