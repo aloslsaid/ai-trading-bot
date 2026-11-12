@@ -9,6 +9,7 @@ class LiveDataTests(unittest.TestCase):
     @patch("gold_ai.live_data.requests.get")
     def test_provider_ohlc_is_not_mislabeled_as_broker_quotes(self, get):
         response = get.return_value
+        response.status_code = 200
         response.json.return_value = {
             "values": [{
                 "datetime": "2026-11-10 23:00:00",
