@@ -109,13 +109,13 @@ def cmd_download_yahoo(args, s):
         "corrupt": 0,
         "note": "Dukascopy unavailable; using Yahoo H1 expanded to M1 with synthetic spread.",
     }
-    summary = build_datasets(bid, ask, s, s.path("yahoo_approx_dir"), label="yahoo_approx", raw_audit=audit)
+    summary = build_datasets(bid, ask, s, s.path("processed_dir"), label="real", raw_audit=audit)
     print("Yahoo build complete:", json.dumps({
         "m1_rows": len(bid),
         "coverage": summary["coverage"],
         "provider_meta": meta,
     }, indent=2, default=str))
-    log.info("Yahoo approximation stored separately; it is not eligible for real-data training or backtesting.")
+    log.info("Next: python main.py train --tf M15")
 
 
 def _backtest(s, tf: str, synthetic: bool, out: Path, strategy: str = "baselines", model_path: str | None = None):

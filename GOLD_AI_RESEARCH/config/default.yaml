@@ -4,7 +4,6 @@ timezone_internal: UTC
 data:
   raw_dir: data/raw
   processed_dir: data/processed
-  yahoo_approx_dir: data/yahoo_approx
   synthetic_dir: data/synthetic
   start_date: "2026-01-01"
   # Dukascopy integer prices are divided by this (XAUUSD = 1000)
