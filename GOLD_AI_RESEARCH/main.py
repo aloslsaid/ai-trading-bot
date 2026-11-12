@@ -58,7 +58,7 @@ def cmd_download(args, s):
             audit["missing"], audit["failed"], audit["corrupt"],
         )
     bid, ask = dukascopy.build_m1_from_raw(s.symbol, start, end, raw_dir, pv)
-    build_datasets(bid, ask, s, s.path("yahoo_approx_dir"), label="yahoo_approx", raw_audit=audit)
+    build_datasets(bid, ask, s, s.path("processed_dir"), label="real", raw_audit=audit)
     log.info("Build complete. Next: python main.py coverage")
 
 
@@ -109,7 +109,7 @@ def cmd_download_yahoo(args, s):
         "corrupt": 0,
         "note": "Dukascopy unavailable; using Yahoo H1 expanded to M1 with synthetic spread.",
     }
-    summary = build_datasets(bid, ask, s, s.path("processed_dir"), label="real", raw_audit=audit)
+    summary = build_datasets(bid, ask, s, s.path("yahoo_approx_dir"), label="yahoo_approx", raw_audit=audit)
     print("Yahoo build complete:", json.dumps({
         "m1_rows": len(bid),
         "coverage": summary["coverage"],
