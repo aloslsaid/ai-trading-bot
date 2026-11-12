@@ -24,3 +24,8 @@ Market data providers and API credentials are not documented in the root files. 
 ## Verification
 
 No test command can be confirmed from the root contents. Record the environment, data period, evaluation method, and actual test results before publishing performance claims.
+
+
+## Inspect the bundled research archive
+
+Run `python inspect_archive.py` to validate the ZIP and list its members without extracting or executing project files. Run `python extract_archive.py` to extract only allow-listed text/data files into the ignored `archive_extracted/` directory for manual review. The CI workflow publishes the extracted review files as a temporary artifact; it does not execute the archived application.

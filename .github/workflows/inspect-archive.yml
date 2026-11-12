@@ -1,0 +1,24 @@
+name: Inspect gold research archive
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: List archive members without executing them
+        run: python inspect_archive.py
+      - name: Extract allow-listed text files for review only
+        run: python extract_archive.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gold-ai-source-review
+          path: archive_extracted/
+          if-no-files-found: error
