@@ -19,7 +19,7 @@ def main() -> int:
             path = PurePosixPath(info.filename)
             windows_path = PureWindowsPath(info.filename)
             if (path.is_absolute() or windows_path.is_absolute() or windows_path.drive
-                    or "\\\\" in info.filename or ".." in path.parts):
+                    or chr(92) in info.filename or ".." in path.parts):
                 raise ValueError(f"Unsafe archive path: {info.filename}")
             if info.is_dir():
                 continue
