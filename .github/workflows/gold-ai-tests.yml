@@ -3,7 +3,7 @@ name: GOLD AI tests
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, chore/inspect-archive-safely]
 
 jobs:
   tests:
