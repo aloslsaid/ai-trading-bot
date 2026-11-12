@@ -92,3 +92,6 @@ python main.py download-yahoo --start 2026-01-01 --end 2026-11-12 --half-spread 
 ```
 
 This is **not** true XAUUSD spot tick data, not real M1 price action, and not a broker Bid/Ask feed. The generated path is explicitly approximate and is stored under `data\yahoo_approx\`, never in `data\processed\`. It is labeled `yahoo_approx`; the normal training and backtest commands accept only datasets labeled `real`, so this fallback cannot overwrite or masquerade as real market history.
+
+
+**Migration safety:** older builds of the Yahoo fallback may have written Yahoo-derived candles into `data\\processed\\` with a `real` label. The current loader explicitly rejects legacy summaries whose raw audit identifies Yahoo Finance. Remove/rebuild that processed directory only after backing it up, then download actual Dukascopy or broker Bid/Ask history before training/backtesting.
