@@ -95,3 +95,8 @@ This is **not** true XAUUSD spot tick data, not real M1 price action, and not a 
 
 
 **Migration safety:** older builds of the Yahoo fallback may have written Yahoo-derived candles into `data\\processed\\` with a `real` label. The current loader explicitly rejects legacy summaries whose raw audit identifies Yahoo Finance. Remove/rebuild that processed directory only after backing it up, then download actual Dukascopy or broker Bid/Ask history before training/backtesting.
+
+
+## Environment configuration
+
+Copy `.env.example` to `.env` and fill only the optional provider credentials you actually use. Never commit `.env` or paste API keys into source code. Twelve Data returns provider OHLC candles, not executable broker Bid/Ask quotes; Telegram and OpenRouter are optional.
