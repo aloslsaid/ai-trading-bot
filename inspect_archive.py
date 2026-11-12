@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from pathlib import PurePosixPath
+from pathlib import PurePosixPath, PureWindowsPath
 from zipfile import ZipFile, BadZipFile
 
 ARCHIVE = "GOLD_AI_RESEARCH_CLEAN (1).zip"
@@ -20,7 +20,15 @@ def main() -> int:
             total = 0
             for member in members:
                 path = PurePosixPath(member.filename)
-                if path.is_absolute() or ".." in path.parts:
+                windows_path = PureWindowsPath(member.filename)
+                if (
+                    "\\" in member.filename
+                    or path.is_absolute()
+                    or windows_path.is_absolute()
+                    or windows_path.drive
+                    or ".." in path.parts
+                    or ".." in windows_path.parts
+                ):
                     print(f"UNSAFE_PATH: {member.filename}")
                     return 3
                 if member.is_dir():
