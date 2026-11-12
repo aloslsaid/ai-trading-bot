@@ -24,3 +24,6 @@ Market data providers and API credentials are not documented in the root files. 
 ## Verification
 
 No test command can be confirmed from the root contents. Record the environment, data period, evaluation method, and actual test results before publishing performance claims.
+
+
+The review branch extracts the allow-listed source files into `GOLD_AI_RESEARCH/` without executing the archived application.
