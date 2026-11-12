@@ -18,20 +18,32 @@ def fetch_live_candles(symbol: str | None = None, interval: str | None = None, o
         raise ValueError("outputsize must be positive")
     symbol = symbol or os.getenv("LIVE_SYMBOL", "XAU/USD")
     interval = interval or os.getenv("LIVE_INTERVAL", "1min")
-    response = requests.get(
-        "https://api.twelvedata.com/time_series",
-        params={
-            "symbol": symbol,
-            "interval": interval,
-            "outputsize": outputsize,
-            "apikey": key,
-            "timezone": "UTC",
-            "format": "JSON",
-        },
-        timeout=30,
-    )
-    response.raise_for_status()
-    payload = response.json()
+    try:
+        response = requests.get(
+            "https://api.twelvedata.com/time_series",
+            params={
+                "symbol": symbol,
+                "interval": interval,
+                "outputsize": outputsize,
+                "apikey": key,
+                "timezone": "UTC",
+                "format": "JSON",
+            },
+            timeout=30,
+        )
+    except requests.RequestException as exc:
+        # Requests exceptions can include the full URL, including the API key.
+        raise RuntimeError(
+            f"Twelve Data request failed ({type(exc).__name__}); check network and credentials."
+        ) from None
+    if response.status_code >= 400:
+        raise RuntimeError(
+            f"Twelve Data returned HTTP {response.status_code}; response details were redacted."
+        )
+    try:
+        payload = response.json()
+    except ValueError:
+        raise RuntimeError("Twelve Data returned an invalid JSON response.") from None
     if "values" not in payload:
         raise RuntimeError(f"Live feed error: {payload.get('message', payload)}")
     data = pd.DataFrame(payload["values"])
