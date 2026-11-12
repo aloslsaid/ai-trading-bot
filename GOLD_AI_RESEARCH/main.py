@@ -83,11 +83,11 @@ def cmd_build(args, s):
 
 
 def cmd_download_yahoo(args, s):
-    """Fallback historical loader when Dukascopy is unreachable.
+    """Optional Yahoo GC=F research approximation, isolated from real Bid/Ask data.
 
-    Uses Yahoo Finance GC=F hourly bars (highly correlated to spot XAUUSD),
-    expands to M1 with a fixed research spread, and writes processed datasets
-    labeled 'real' with clear provenance in the build summary.
+    Yahoo H1 bars are expanded to flat M1 bars with a fixed synthetic spread.
+    They are stored separately and labeled 'yahoo_approx', so the normal
+    real-data training and backtesting commands reject them.
     """
     start, end = _range(args, s)
     half = args.half_spread if args.half_spread is not None else 0.35
@@ -269,7 +269,7 @@ def main() -> None:
         sp.set_defaults(fn=fn)
     sp = sub.add_parser(
         "download-yahoo",
-        help="Fallback: download 2026 gold H1 from Yahoo Finance (GC=F) and build datasets when Dukascopy is down",
+        help="Download Yahoo GC=F hourly bars as an isolated approximate research dataset (not real Bid/Ask)",
     )
     sp.add_argument("--start", help="YYYY-MM-DD (UTC); default = configured start date")
     sp.add_argument("--end", help="exclusive UTC date/hour; default = now")
