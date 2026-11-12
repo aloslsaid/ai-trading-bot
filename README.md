@@ -1,17 +1,26 @@
-# ai-trading-bot
-GOLD AI — Deep Learning Gold Market Prediction
-OLD AI is a machine learning and deep learning project built to study and predict the movement of the gold market (XAUUSD). The idea behind it is simple: instead of relying on a few technical indicators or manually analyzing charts, I wanted to build an AI system that learns from historical gold market data and tries to understand how the market behaves.
+# GOLD AI — Gold Market Prediction
 
-The model is trained using approximately one year of historical gold data. It analyzes historical price movements, technical indicators, market momentum, volatility, and support and resistance levels. It also looks at the latest three completed candles to understand recent price action and combine it with the broader market context.
+An experimental project exploring machine-learning approaches to historical gold-market (XAUUSD) data. The repository currently contains a ZIP archive and this guide; the Python source and data dependencies have not been independently reviewed here.
 
-The system uses more than 20 technical indicators, including RSI, MACD, ADX, ATR, VWAP, Bollinger Bands, SMA, EMA, Stochastic, CCI, and ROC. It also incorporates additional market features such as candle patterns, trend strength, price structure, and volatility.
+## Repository contents
 
-The main goal is to predict whether gold is more likely to move up or down, while also estimating future prices and providing prediction probabilities. The project explores neural networks and other machine learning approaches to identify patterns that might be difficult to recognize through traditional technical analysis alone.
+- `GOLD_AI_RESEARCH_CLEAN (1).zip` — project archive. Extract it locally to inspect its contents before running anything.
+- `README.md` — project overview and onboarding notes.
 
-Beyond prediction, GOLD AI is designed to evaluate its own performance through historical testing, compare different models, and improve through retraining and updated market data.
+## Getting started
 
-This is an ongoing project, and I'm continuously working on improving its accuracy, data quality, model architecture, and overall reliability. I want to turn it into a complete AI-powered gold market research system rather than just another indicator-based trading bot.
+1. Download or clone this repository.
+2. Extract the ZIP archive into a new local folder.
+3. Review the extracted files, especially its own README, dependency files, and data-source instructions.
+4. Use a separate virtual environment and install only dependencies specified by the extracted project.
+5. Do not run scripts until you understand their inputs and any network or trading actions they perform.
 
-The goal isn't to build a model that simply guesses the next candle. It's to build an AI that learns from market history, understands different market conditions, and makes data-driven predictions.
+There is no verified command to train or launch the project from the files currently visible at the repository root. Add the source files, dependency manifest, data description, and reproducible commands to the repository to make it directly usable.
 
-Built with Python, Machine Learning, Deep Learning, and Quantitative Finance.
+## Data, credentials, and safety
+
+Market data providers and API credentials are not documented in the root files. Keep credentials in local environment variables or an untracked `.env` file; never commit them. Historical model predictions are not financial advice, do not guarantee future results, and should not be used to place trades without independent validation and risk controls.
+
+## Verification
+
+No test command can be confirmed from the root contents. Record the environment, data period, evaluation method, and actual test results before publishing performance claims.
