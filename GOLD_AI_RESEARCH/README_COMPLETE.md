@@ -81,14 +81,3 @@ python main.py evaluate --tf M15
 ```
 
 The default YAML config can be overridden with the global option `--config path\to\override.yaml`, placed before the command. Do not commit credentials, private data, or downloaded tick history.
-
-
-## Yahoo research approximation (separate from real Bid/Ask data)
-
-If Dukascopy is unavailable, the optional Yahoo command can retrieve GC=F hourly futures bars and expand each hour into flat M1 bars with a configurable fixed half-spread:
-
-```powershell
-python main.py download-yahoo --start 2026-01-01 --end 2026-11-12 --half-spread 0.35
-```
-
-This is **not** true XAUUSD spot tick data, not real M1 price action, and not a broker Bid/Ask feed. The generated path is explicitly approximate and is stored under `data\yahoo_approx\`, never in `data\processed\`. It is labeled `yahoo_approx`; the normal training and backtest commands accept only datasets labeled `real`, so this fallback cannot overwrite or masquerade as real market history.
